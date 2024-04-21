@@ -1,20 +1,20 @@
-package com.example.mystoryapp.data
+package com.example.mystoryapp.data.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
+import com.example.mystoryapp.data.remote.response.DetailStoryResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
 import com.example.mystoryapp.data.remote.response.RegisterResponse
+import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.first
 
-class UserRepository private constructor(private val userPreference: UserPreference) {
+class StoryRepository private constructor(
+    private val apiService: ApiService,
+    private val userPreference: UserPreference
+    ) {
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
@@ -30,23 +30,32 @@ class UserRepository private constructor(private val userPreference: UserPrefere
 
     // TODO: register user using retrofit
     suspend fun register(name: String, email: String, password: String): RegisterResponse {
-        return ApiConfig.getApiService().register(name, email, password)
+        return apiService.register(name, email, password)
     }
 
     suspend fun login(email: String, password: String): LoginResponse {
-        return ApiConfig.getApiService().login(email, password)
+        return apiService.login(email, password)
+    }
+
+    suspend fun getStories(): StoryResponse {
+        return apiService.getStories()
+    }
+
+    suspend fun getDetailStory(id: String): DetailStoryResponse {
+        return apiService.getDetailStory(id)
     }
 
     companion object {
         const val TAG = "UserRepository"
 
         @Volatile
-        private var instance: UserRepository? = null
+        private var instance: StoryRepository? = null
         fun getInstance(
+            apiService: ApiService,
             userPreference: UserPreference
-        ): UserRepository =
+        ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference)
+                instance ?: StoryRepository(apiService, userPreference)
             }.also { instance = it }
     }
 }

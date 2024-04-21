@@ -3,11 +3,16 @@ package com.example.mystoryapp.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mystoryapp.data.remote.response.ListStoryItem
+import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ActivityMainBinding
+import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.welcome.WelcomeActivity
 
@@ -16,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private val storyAdapter = StoryAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,13 +35,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupView()
-        setupLogoutAction()
+        setupAction()
     }
 
-    private fun setupLogoutAction() {
-        binding.btnLogout.setOnClickListener {
-            mainViewModel.logout()
-        }
+    private fun setupAction() {
+
     }
 
     private fun setupView() {
@@ -46,6 +50,32 @@ class MainActivity : AppCompatActivity() {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         supportActionBar?.hide()
+
+        binding.rvListStory.layoutManager = LinearLayoutManager(this)
+        binding.rvListStory.adapter = storyAdapter
+
+        mainViewModel.getStories()
+
+        mainViewModel.story.observe(this) {story ->
+            setStoryData(story)
+        }
+
+        mainViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+    }
+
+    private fun setStoryData(story: List<ListStoryItem>) {
+        storyAdapter.submitList(story)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBarMain.visibility = View.VISIBLE
+        } else {
+            binding.progressBarMain.visibility = View.GONE
+
+        }
     }
 
 
