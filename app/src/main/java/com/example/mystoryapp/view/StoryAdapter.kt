@@ -1,5 +1,6 @@
 package com.example.mystoryapp.view
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ListStoryItemBinding
+import com.example.mystoryapp.view.detailstory.DetailStoryActivity
 
 class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -29,6 +31,13 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
             Glide.with(binding.ivStory.context)
                 .load(storyItem.photoUrl)
                 .into(binding.ivStory)
+
+            // when item clicked, go to detail story
+            itemView.setOnClickListener{ view ->
+                val intent = Intent(view.context, DetailStoryActivity::class.java)
+                intent.putExtra(DetailStoryActivity.EXTRA_ID, storyItem.id)
+                view.context.startActivity(intent)
+            }
         }
     }
 

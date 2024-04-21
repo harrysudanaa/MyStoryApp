@@ -2,6 +2,7 @@ package com.example.mystoryapp.data.repository
 
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
+import com.example.mystoryapp.data.remote.response.DetailStoryResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
 import com.example.mystoryapp.data.remote.response.RegisterResponse
 import com.example.mystoryapp.data.remote.response.StoryResponse
@@ -37,8 +38,11 @@ class StoryRepository private constructor(
     }
 
     suspend fun getStories(): StoryResponse {
-        println(userPreference.getSession().first().token)
         return apiService.getStories()
+    }
+
+    suspend fun getDetailStory(id: String): DetailStoryResponse {
+        return apiService.getDetailStory(id)
     }
 
     companion object {
