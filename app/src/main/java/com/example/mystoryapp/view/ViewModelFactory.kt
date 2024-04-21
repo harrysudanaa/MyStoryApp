@@ -3,13 +3,13 @@ package com.example.mystoryapp.view
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mystoryapp.data.UserRepository
+import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.di.Injection
 import com.example.mystoryapp.view.login.LoginViewModel
 import com.example.mystoryapp.view.main.MainViewModel
 import com.example.mystoryapp.view.signup.SignupViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

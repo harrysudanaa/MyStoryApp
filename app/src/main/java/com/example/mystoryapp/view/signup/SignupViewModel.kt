@@ -4,15 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mystoryapp.data.UserRepository
+import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.data.remote.response.ErrorResponse
-import com.example.mystoryapp.data.remote.response.RegisterResponse
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class SignupViewModel(private val repository: UserRepository) : ViewModel() {
+class SignupViewModel(private val repository: StoryRepository) : ViewModel() {
 
     private val _message = MutableLiveData<ErrorResponse>()
     val message : LiveData<ErrorResponse> = _message
