@@ -93,7 +93,9 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         binding.btnUpload.setOnClickListener {
-            addStory()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                addStory()
+            }
             addStoryViewModel.status.observe(this) { status ->
                 showToast(status.message.toString())
             }
