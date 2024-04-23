@@ -28,7 +28,6 @@ class AddStoryViewModel(private val repository: StoryRepository) : ViewModel() {
                 _isLoading.value = true
                 val response = repository.addStory(imagePhoto, description)
                 _status.value = response
-
             } catch (e: HttpException) {
                 _isLoading.value = true
                 val errorBody = e.response()?.errorBody()?.string()

@@ -4,17 +4,20 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.example.mystoryapp.databinding.ActivityAddStoryBinding
+import com.example.mystoryapp.utils.reduceFileImage
 import com.example.mystoryapp.utils.uriToFile
 import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.camera.CameraActivity
@@ -122,9 +125,10 @@ class AddStoryActivity : AppCompatActivity() {
         launcherCameraX.launch(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun addStory() {
         currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this)
+            val imageFile = uriToFile(uri, this).reduceFileImage()
             val description = binding.edDescription.text.toString()
 
             val requestBody = description.toRequestBody("text/plain".toMediaType())
