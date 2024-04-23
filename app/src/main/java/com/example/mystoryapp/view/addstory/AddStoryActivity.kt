@@ -9,14 +9,27 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.example.mystoryapp.databinding.ActivityAddStoryBinding
+import com.example.mystoryapp.utils.uriToFile
+import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.camera.CameraActivity
+import com.example.mystoryapp.view.main.MainActivity
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
+    private val addStoryViewModel by viewModels<AddStoryViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     private var currentImageUri: Uri? = null
 
@@ -75,6 +88,16 @@ class AddStoryActivity : AppCompatActivity() {
         binding.btnCamera.setOnClickListener {
             startCameraX()
         }
+
+        binding.btnUpload.setOnClickListener {
+            addStory()
+            addStoryViewModel.status.observe(this) { status ->
+                showToast(status.message.toString())
+            }
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
     }
 
     private fun startGallery() {
@@ -97,6 +120,23 @@ class AddStoryActivity : AppCompatActivity() {
     private fun startCameraX() {
         val intent = Intent(this, CameraActivity::class.java)
         launcherCameraX.launch(intent)
+    }
+
+    private fun addStory() {
+        currentImageUri?.let { uri ->
+            val imageFile = uriToFile(uri, this)
+            val description = binding.edDescription.text.toString()
+
+            val requestBody = description.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "photo",
+                imageFile.name,
+                requestImageFile
+            )
+
+            addStoryViewModel.addStory(multipartBody, requestBody)
+        } ?: showToast("Empty Image")
     }
 
     companion object {

@@ -38,7 +38,7 @@
         tools:text="Gallery" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/textInputLayoutDescription"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -48,6 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnCamera">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
@@ -63,6 +64,6 @@
         android:text="Upload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
