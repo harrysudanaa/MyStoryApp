@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import com.example.mystoryapp.utils.uriToFile
 import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.camera.CameraActivity
 import com.example.mystoryapp.view.main.MainActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -71,12 +73,7 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
         setupAction()
-    }
-
-    private fun setupView() {
-
     }
 
     private fun setupAction() {
@@ -98,10 +95,14 @@ class AddStoryActivity : AppCompatActivity() {
             }
             addStoryViewModel.status.observe(this) { status ->
                 showToast(status.message.toString())
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
             }
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+
+            addStoryViewModel.isLoading.observe(this) {
+                showLoading(it)
+            }
         }
     }
 
@@ -133,16 +134,29 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(uri, this).reduceFileImage()
             val description = binding.edDescription.text.toString()
 
-            val requestBody = description.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
-                imageFile.name,
-                requestImageFile
-            )
+            if (imageFile.length() > 1024 * 1024) {
+                // When image size greater than 1 MB
+                showToast("Image size exceeds 1MB limit")
+            } else {
+                val requestBody = description.toRequestBody("text/plain".toMediaType())
+                val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+                val multipartBody = MultipartBody.Part.createFormData(
+                    "photo",
+                    imageFile.name,
+                    requestImageFile
+                )
 
-            addStoryViewModel.addStory(multipartBody, requestBody)
+                addStoryViewModel.addStory(multipartBody, requestBody)
+            }
         } ?: showToast("Empty Image")
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBarAddStory.visibility = View.VISIBLE
+        } else {
+            binding.progressBarAddStory.visibility = View.GONE
+        }
     }
 
     companion object {
