@@ -14,6 +14,7 @@ import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.ViewModelFactory
+import com.example.mystoryapp.view.addstory.AddStoryActivity
 import com.example.mystoryapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-
+        binding.fabAddStory.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupView() {
