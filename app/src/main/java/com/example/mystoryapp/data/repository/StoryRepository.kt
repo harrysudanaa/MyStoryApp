@@ -2,6 +2,7 @@ package com.example.mystoryapp.data.repository
 
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
+import com.example.mystoryapp.data.remote.response.AddStoryResponse
 import com.example.mystoryapp.data.remote.response.DetailStoryResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
 import com.example.mystoryapp.data.remote.response.RegisterResponse
@@ -10,6 +11,8 @@ import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class StoryRepository private constructor(
     private val apiService: ApiService,
@@ -43,6 +46,10 @@ class StoryRepository private constructor(
 
     suspend fun getDetailStory(id: String): DetailStoryResponse {
         return apiService.getDetailStory(id)
+    }
+
+    suspend fun addStory(imagePhoto: MultipartBody.Part, description: RequestBody): AddStoryResponse {
+        return apiService.addStory(imagePhoto, description)
     }
 
     companion object {
