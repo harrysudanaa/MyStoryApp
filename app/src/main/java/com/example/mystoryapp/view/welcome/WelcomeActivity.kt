@@ -39,11 +39,11 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.loginButton.setOnClickListener {
+        binding.btnLoginWelcome.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        binding.signupButton.setOnClickListener {
+        binding.btnSignupWelcome.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
     }

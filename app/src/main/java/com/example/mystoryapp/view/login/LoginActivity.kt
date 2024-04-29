@@ -3,6 +3,7 @@ package com.example.mystoryapp.view.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -56,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
             loginViewModel.loginStatus.observe(this) { status ->
                 if (status.error == false) {
+                    loginViewModel.saveSession(UserModel(email =  email, token = "${status.loginResult?.token}"))
                     AlertDialog.Builder(this).apply {
                         setTitle("Login")
                         setMessage("Login Success!")
@@ -68,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
                         create()
                         show()
                     }
-                    loginViewModel.saveSession(UserModel(email, "${status.loginResult?.token}"))
                 } else {
                     AlertDialog.Builder(this).apply {
                         setTitle("Login")

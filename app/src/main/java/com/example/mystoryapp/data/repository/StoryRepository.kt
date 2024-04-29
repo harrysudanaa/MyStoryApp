@@ -1,7 +1,11 @@
 package com.example.mystoryapp.data.repository
 
+import android.content.Context
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
+import com.example.mystoryapp.data.local.room.StoryImage
+import com.example.mystoryapp.data.local.room.StoryImageDao
+import com.example.mystoryapp.data.local.room.StoryImageDatabase
 import com.example.mystoryapp.data.remote.response.AddStoryResponse
 import com.example.mystoryapp.data.remote.response.DetailStoryResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
@@ -16,7 +20,8 @@ import okhttp3.RequestBody
 
 class StoryRepository private constructor(
     private val apiService: ApiService,
-    private val userPreference: UserPreference
+    private val userPreference: UserPreference,
+    private val storyImageDao: StoryImageDao
     ) {
 
     suspend fun saveSession(user: UserModel) {
@@ -52,6 +57,12 @@ class StoryRepository private constructor(
         return apiService.addStory(imagePhoto, description)
     }
 
+    suspend fun addImageToDatabase(image: StoryImage) {
+        storyImageDao.insertImage(image)
+    }
+
+    fun getAllStoryImages() = storyImageDao.getAllStoryImage()
+
     companion object {
         const val TAG = "UserRepository"
 
@@ -59,10 +70,11 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
         fun getInstance(
             apiService: ApiService,
-            userPreference: UserPreference
+            userPreference: UserPreference,
+            storyImageDao: StoryImageDao
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference)
+                instance ?: StoryRepository(apiService, userPreference, storyImageDao)
             }.also { instance = it }
     }
 }

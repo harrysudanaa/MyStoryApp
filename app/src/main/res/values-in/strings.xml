@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyStory</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Login</string>
+    <string name="message_welcome_page">Bagikan pengalaman, temukan ide-ide baru, dan rasakan dunia yang penuh makna dengan My Story!</string>
+    <string name="title_welcome_page">Selamat datang di Aplikasi My Story!</string>
+    <string name="title_signup_page">Daftar</string>
+    <string name="email">Alamat email</string>
+    <string name="password">Password</string>
+    <string name="title_login_page">Login</string>
+    <string name="english_lang">Bahasa Inggris</string>
+    <string name="indonesian_lang">Bahasa Indonesia</string>
+    <string name="settings_title">Pengaturan</string>
+    <string name="logout_title">Keluar</string>
+</resources>

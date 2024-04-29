@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivLogin"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
@@ -21,10 +21,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal2"
-            app:srcCompat="@drawable/image_login" />
+            app:srcCompat="@drawable/login_image" />
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/tvLoginTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -32,37 +32,12 @@
             android:layout_marginEnd="32dp"
             android:text="@string/title_login_page"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal" />
-
-        <TextView
-            android:id="@+id/messageTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/message_login_page"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
-
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/email"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/messageTextView" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailEditTextLayout"
@@ -70,11 +45,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailTextView"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoginTitle"
             app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <com.example.mystoryapp.view.customview.MyEmailEditText
@@ -82,22 +58,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
                 android:paddingStart="50dp"
-                android:paddingEnd="10dp"
-                android:hint="@string/email_address_hint"
-                android:inputType="textEmailAddress"/>
+                android:paddingEnd="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/passwordTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/password"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordEditTextLayout"
@@ -110,7 +75,7 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextView"
+            app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
             app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
             <com.example.mystoryapp.view.customview.MyPasswordEditText
@@ -118,6 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
+                android:paddingStart="50dp"
+                android:paddingEnd="10dp"
+                android:hint="@string/password"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 

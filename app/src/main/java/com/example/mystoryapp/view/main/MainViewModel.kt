@@ -1,13 +1,19 @@
 package com.example.mystoryapp.view.main
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
+import com.example.mystoryapp.data.local.room.StoryImage
+import com.example.mystoryapp.data.local.room.StoryImageDatabase
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.google.gson.Gson
@@ -44,6 +50,12 @@ class MainViewModel(private val repository: StoryRepository) : ViewModel() {
     fun logout() {
         viewModelScope.launch {
             repository.logout()
+        }
+    }
+
+    fun addImageToDatabase(image: StoryImage) {
+        viewModelScope.launch {
+            repository.addImageToDatabase(image)
         }
     }
 

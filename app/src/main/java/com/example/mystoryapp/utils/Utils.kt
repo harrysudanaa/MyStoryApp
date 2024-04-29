@@ -9,6 +9,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -82,4 +83,13 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
     return Bitmap.createBitmap(
         source, 0, 0, source.width, source.height, matrix, true
     )
+}
+
+fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
+    // Use Glide to convert uri to bitmap
+    return Glide.with(context)
+        .asBitmap()
+        .load(uri)
+        .submit()
+        .get()
 }
