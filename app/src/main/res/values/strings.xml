@@ -14,7 +14,6 @@
     <string name="logout_title">Logout</string>
 
     <string name="appwidget_text" translatable="false">EXAMPLE</string>
-    <string name="add_widget" translatable="false">Add widget</string>
     <string name="app_widget_description" translatable="false">This is an app widget description</string>
     <string name="empty_text" translatable="false">NO DATA</string>
 </resources>

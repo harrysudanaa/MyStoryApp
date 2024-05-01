@@ -19,19 +19,18 @@ import androidx.core.net.toUri
 import com.example.mystoryapp.databinding.ActivityAddStoryBinding
 import com.example.mystoryapp.utils.reduceFileImage
 import com.example.mystoryapp.utils.uriToFile
-import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.camera.CameraActivity
 import com.example.mystoryapp.view.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
+@AndroidEntryPoint
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
-    private val addStoryViewModel by viewModels<AddStoryViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+    private val addStoryViewModel by viewModels<AddStoryViewModel>()
 
     private var currentImageUri: Uri? = null
 
@@ -127,25 +126,28 @@ class AddStoryActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun addStory() {
-        currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
-            val description = binding.edDescription.text.toString()
+        addStoryViewModel.getSession().observe(this) { user ->
+            val userToken = "Bearer ${user.token}"
+            currentImageUri?.let { uri ->
+                val imageFile = uriToFile(uri, this).reduceFileImage()
+                val description = binding.edDescription.text.toString()
 
-            if (imageFile.length() > 1024 * 1024) {
-                // When image size greater than 1 MB
-                showToast("Image size exceeds 1MB limit")
-            } else {
-                val requestBody = description.toRequestBody("text/plain".toMediaType())
-                val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-                val multipartBody = MultipartBody.Part.createFormData(
-                    "photo",
-                    imageFile.name,
-                    requestImageFile
-                )
+                if (imageFile.length() > 1024 * 1024) {
+                    // When image size greater than 1 MB
+                    showToast("Image size exceeds 1MB limit")
+                } else {
+                    val requestBody = description.toRequestBody("text/plain".toMediaType())
+                    val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+                    val multipartBody = MultipartBody.Part.createFormData(
+                        "photo",
+                        imageFile.name,
+                        requestImageFile
+                    )
 
-                addStoryViewModel.addStory(multipartBody, requestBody)
-            }
-        } ?: showToast("Empty Image")
+                    addStoryViewModel.addStory(userToken, multipartBody, requestBody)
+                }
+            } ?: showToast("Empty Image")
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

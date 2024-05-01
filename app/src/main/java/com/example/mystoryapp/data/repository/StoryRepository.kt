@@ -13,8 +13,9 @@ import com.example.mystoryapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import javax.inject.Inject
 
-class StoryRepository private constructor(
+class StoryRepository @Inject constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
     private val storyImageDao: StoryImageDao
@@ -31,8 +32,6 @@ class StoryRepository private constructor(
     suspend fun logout() {
         userPreference.logout()
     }
-
-    // TODO: register user using retrofit
     suspend fun register(name: String, email: String, password: String): RegisterResponse {
         return apiService.register(name, email, password)
     }
@@ -41,16 +40,16 @@ class StoryRepository private constructor(
         return apiService.login(email, password)
     }
 
-    suspend fun getStories(): StoryResponse {
-        return apiService.getStories()
+    suspend fun getStories(token: String): StoryResponse {
+        return apiService.getStories(token)
     }
 
-    suspend fun getDetailStory(id: String): DetailStoryResponse {
-        return apiService.getDetailStory(id)
+    suspend fun getDetailStory(token: String, id: String): DetailStoryResponse {
+        return apiService.getDetailStory(token, id)
     }
 
-    suspend fun addStory(imagePhoto: MultipartBody.Part, description: RequestBody): AddStoryResponse {
-        return apiService.addStory(imagePhoto, description)
+    suspend fun addStory(token: String, imagePhoto: MultipartBody.Part, description: RequestBody): AddStoryResponse {
+        return apiService.addStory(token, imagePhoto, description)
     }
 
     suspend fun addImageToDatabase(image: StoryImage) {
@@ -58,19 +57,4 @@ class StoryRepository private constructor(
     }
 
     fun getAllStoryImages() = storyImageDao.getAllStoryImage()
-
-    companion object {
-        const val TAG = "UserRepository"
-
-        @Volatile
-        private var instance: StoryRepository? = null
-        fun getInstance(
-            apiService: ApiService,
-            userPreference: UserPreference,
-            storyImageDao: StoryImageDao
-        ): StoryRepository =
-            instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference, storyImageDao)
-            }.also { instance = it }
-    }
 }

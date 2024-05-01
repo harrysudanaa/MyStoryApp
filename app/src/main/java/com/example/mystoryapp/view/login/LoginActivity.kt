@@ -11,15 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.databinding.ActivityLoginBinding
-import com.example.mystoryapp.view.AuthViewModelFactory
-import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val loginViewModel by viewModels<LoginViewModel> {
-        AuthViewModelFactory.getInstance(this)
-    }
+    private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

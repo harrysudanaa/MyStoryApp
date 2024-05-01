@@ -10,10 +10,13 @@ import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.room.StoryImage
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.repository.StoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: StoryRepository
 ) : ViewModel() {
 
@@ -27,11 +30,11 @@ class MainViewModel(
         return repository.getSession().asLiveData()
     }
 
-    fun getStories() {
+    fun getStories(token: String) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val response = repository.getStories().listStory
+                val response = repository.getStories(token).listStory
                 _story.value = response
             } catch (e: HttpException) {
                 _isLoading.value = true

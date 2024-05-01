@@ -6,13 +6,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.mystoryapp.databinding.ActivityDetailStoryBinding
-import com.example.mystoryapp.view.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailStoryBinding
-    private val detailStoryViewModel by viewModels<DetailStoryViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+    private val detailStoryViewModel by viewModels<DetailStoryViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,11 @@ class DetailStoryActivity : AppCompatActivity() {
 
     private fun setupView() {
         val idStory = intent.getStringExtra(EXTRA_ID)
-        idStory?.let { detailStoryViewModel.getDetailStory(idStory) }
+
+        detailStoryViewModel.getSession().observe(this) { user ->
+            val userToken = "Bearer ${user.token}"
+            idStory?.let { detailStoryViewModel.getDetailStory(userToken, idStory) }
+        }
 
         detailStoryViewModel.detailStory.observe(this) { detailStory ->
             binding.tvDetailStoryTitle.text = detailStory.story?.name

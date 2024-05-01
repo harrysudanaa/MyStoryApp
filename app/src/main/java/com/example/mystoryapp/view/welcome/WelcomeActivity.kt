@@ -1,6 +1,5 @@
 package com.example.mystoryapp.view.welcome
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent

@@ -6,16 +6,14 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import androidx.core.net.toUri
 import androidx.core.os.bundleOf
-import com.bumptech.glide.Glide
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.repository.StoryRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.mystoryapp.utils.uriToBitmap
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-internal class StackRemoteViewsFactory(private val context: Context, private val repository: StoryRepository) : RemoteViewsService.RemoteViewsFactory {
+class StackRemoteViewsFactory(private val context: Context, private val repository: StoryRepository) : RemoteViewsService.RemoteViewsFactory {
 
     private val widgetItems = ArrayList<Bitmap>()
 
@@ -61,15 +59,5 @@ internal class StackRemoteViewsFactory(private val context: Context, private val
     override fun getItemId(position: Int): Long = 0
 
     override fun hasStableIds(): Boolean = false
-
-    private fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
-        // implement glide convert to bitmap
-        // Use Glide to convert uri to bitmap
-        return Glide.with(context)
-            .asBitmap()
-            .load(uri)
-            .submit()
-            .get()
-    }
 
 }

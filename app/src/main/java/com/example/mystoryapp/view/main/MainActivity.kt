@@ -19,16 +19,15 @@ import com.example.mystoryapp.data.local.room.StoryImage
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
-import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.addstory.AddStoryActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
 import com.example.mystoryapp.view.welcome.WelcomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-    private val mainViewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+    private val mainViewModel by viewModels<MainViewModel>()
     private val storyAdapter = StoryAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,9 +102,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvListStory.layoutManager = LinearLayoutManager(this)
         binding.rvListStory.adapter = storyAdapter
 
-        mainViewModel.getSession().observe(this) {
-            mainViewModel.getStories()
-            println(it.token)
+        mainViewModel.getSession().observe(this) { user ->
+            mainViewModel.getStories("Bearer ${user.token}")
         }
 
         mainViewModel.story.observe(this) { story ->

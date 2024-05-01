@@ -9,14 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mystoryapp.databinding.ActivitySignupBinding
-import com.example.mystoryapp.view.AuthViewModelFactory
-import com.example.mystoryapp.view.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySignupBinding
-    private val signupViewModel by viewModels<SignupViewModel> {
-        AuthViewModelFactory.getInstance(this)
-    }
+    private val signupViewModel by viewModels<SignupViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
