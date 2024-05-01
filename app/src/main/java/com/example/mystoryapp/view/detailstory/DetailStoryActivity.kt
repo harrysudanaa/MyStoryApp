@@ -2,13 +2,9 @@ package com.example.mystoryapp.view.detailstory
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
-import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivityDetailStoryBinding
 import com.example.mystoryapp.view.ViewModelFactory
 

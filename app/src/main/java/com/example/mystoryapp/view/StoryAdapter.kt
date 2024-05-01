@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mystoryapp.data.remote.response.ListStoryItem
-import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ListStoryItemBinding
 import com.example.mystoryapp.view.detailstory.DetailStoryActivity
 

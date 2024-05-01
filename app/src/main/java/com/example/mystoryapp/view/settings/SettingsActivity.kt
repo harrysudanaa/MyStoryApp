@@ -1,13 +1,8 @@
 package com.example.mystoryapp.view.settings
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivitySettingsBinding
 import com.example.mystoryapp.view.main.MainActivity
 import java.util.Locale

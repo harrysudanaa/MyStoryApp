@@ -13,21 +13,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.local.room.StoryImage
 import com.example.mystoryapp.data.remote.response.ListStoryItem
-import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ActivityMainBinding
-import com.example.mystoryapp.utils.uriToBitmap
 import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.addstory.AddStoryActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
 import com.example.mystoryapp.view.welcome.WelcomeActivity
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
@@ -109,10 +104,9 @@ class MainActivity : AppCompatActivity() {
         binding.rvListStory.adapter = storyAdapter
 
         mainViewModel.getSession().observe(this) {
+            mainViewModel.getStories()
             println(it.token)
         }
-
-        mainViewModel.getStories()
 
         mainViewModel.story.observe(this) { story ->
             setStoryData(story)
@@ -140,6 +134,4 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
-
 }

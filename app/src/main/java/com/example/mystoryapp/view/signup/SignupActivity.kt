@@ -5,20 +5,17 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivitySignupBinding
+import com.example.mystoryapp.view.AuthViewModelFactory
 import com.example.mystoryapp.view.ViewModelFactory
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySignupBinding
     private val signupViewModel by viewModels<SignupViewModel> {
-        ViewModelFactory.getInstance(this)
+        AuthViewModelFactory.getInstance(this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

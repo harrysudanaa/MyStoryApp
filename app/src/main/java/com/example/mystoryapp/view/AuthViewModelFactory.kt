@@ -11,19 +11,16 @@ import com.example.mystoryapp.view.login.LoginViewModel
 import com.example.mystoryapp.view.main.MainViewModel
 import com.example.mystoryapp.view.signup.SignupViewModel
 
-class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
+class AuthViewModelFactory(private val repository: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
+            modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
+                SignupViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(DetailStoryViewModel::class.java) -> {
-                DetailStoryViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
-                AddStoryViewModel(repository) as T
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                LoginViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -31,15 +28,15 @@ class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvi
 
     companion object {
         @Volatile
-        private var INSTANCE: ViewModelFactory? = null
+        private var INSTANCE: AuthViewModelFactory? = null
         @JvmStatic
-        fun getInstance(context: Context): ViewModelFactory {
+        fun getInstance(context: Context): AuthViewModelFactory {
             if (INSTANCE == null) {
-                synchronized(ViewModelFactory::class.java) {
-                    INSTANCE = ViewModelFactory(Injection.provideRepository(context))
+                synchronized(AuthViewModelFactory::class.java) {
+                    INSTANCE = AuthViewModelFactory(Injection.provideRepository(context))
                 }
             }
-            return INSTANCE as ViewModelFactory
+            return INSTANCE as AuthViewModelFactory
         }
     }
 }

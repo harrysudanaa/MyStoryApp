@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -21,8 +19,6 @@ android {
     }
 
     buildTypes {
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
         debug {
             buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
         }
@@ -80,4 +76,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.51.1")
 }

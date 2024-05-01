@@ -1,11 +1,11 @@
 package com.example.mystoryapp.data.remote.retrofit
 
+import com.example.mystoryapp.BuildConfig
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.mystoryapp.BuildConfig
-import okhttp3.Interceptor
 
 class ApiConfig {
     companion object {

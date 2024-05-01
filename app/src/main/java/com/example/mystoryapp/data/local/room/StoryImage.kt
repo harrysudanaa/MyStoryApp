@@ -1,6 +1,5 @@
 package com.example.mystoryapp.data.local.room
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
