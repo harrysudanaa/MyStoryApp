@@ -8,10 +8,15 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.example.mystoryapp.R
+import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.utils.uriToBitmap
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 class StackRemoteViewsFactory(private val context: Context, private val repository: StoryRepository) : RemoteViewsService.RemoteViewsFactory {
 
@@ -22,14 +27,21 @@ class StackRemoteViewsFactory(private val context: Context, private val reposito
     }
 
     override fun onDataSetChanged() {
-        val imageList = repository.getAllStoryImages()
-        imageList.forEach { storyItem ->
-            val imageUri = Uri.parse(storyItem.imageStory)
-            val imageBitmap = uriToBitmap(context, imageUri)
-            if (imageBitmap != null) {
-                widgetItems.add(imageBitmap)
+        widgetItems.clear()
+        try {
+            val imageList = repository.getStories()
+            println("factory widget: $imageList")
+            imageList.forEach { storyItem ->
+                val imageUri = Uri.parse(storyItem.photoUrl)
+                val imageBitmap = uriToBitmap(context, imageUri)
+                if (imageBitmap != null) {
+                    widgetItems.add(imageBitmap)
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
     }
 
     override fun onDestroy() {

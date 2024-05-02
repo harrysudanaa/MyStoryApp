@@ -38,12 +38,11 @@ class AddStoryViewModel @Inject constructor(
                 _isLoading.value = true
                 val response = repository.addStory(token, imagePhoto, description)
                 _status.value = response
-                Log.d("AddStoryViewModel", "tes success")
             } catch (e: HttpException) {
                 _isLoading.value = true
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
-                Log.e("AddStoryViewModel", errorResponse.message.toString())
+                _status.value = errorResponse
             } finally {
                 _isLoading.value = false
             }

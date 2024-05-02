@@ -2,8 +2,8 @@ package com.example.mystoryapp.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.mystoryapp.data.local.room.StoryImageDao
-import com.example.mystoryapp.data.local.room.StoryImageDatabase
+import com.example.mystoryapp.data.local.room.StoryDao
+import com.example.mystoryapp.data.local.room.StoryDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,17 +15,17 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): StoryImageDatabase {
+    fun provideDatabase(app: Application): StoryDatabase {
         return Room.databaseBuilder(
             app,
-            StoryImageDatabase::class.java,
-            "story_image"
+            StoryDatabase::class.java,
+            "story"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideStoryImageDao(storyImageDatabase: StoryImageDatabase): StoryImageDao {
-        return storyImageDatabase.storyImageDao()
+    fun provideStoryDao(storyDatabase: StoryDatabase): StoryDao {
+        return storyDatabase.storyDao()
     }
 }

@@ -15,6 +15,7 @@ class StackWidgetService : RemoteViewsService() {
 
     @Inject
     lateinit var context: Context
+
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
         return StackRemoteViewsFactory(context, repository)
     }

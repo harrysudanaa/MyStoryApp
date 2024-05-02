@@ -30,7 +30,7 @@ class DetailStoryActivity : AppCompatActivity() {
         }
 
         detailStoryViewModel.detailStory.observe(this) { detailStory ->
-            binding.tvDetailStoryTitle.text = detailStory.story?.name
+            binding.tvDetailStoryName.text = detailStory.story?.name
             binding.tvDetailStoryDesc.text = detailStory.story?.description
 
             Glide.with(this)

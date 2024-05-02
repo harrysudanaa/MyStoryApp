@@ -2,8 +2,8 @@ package com.example.mystoryapp.data.repository
 
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
-import com.example.mystoryapp.data.local.room.StoryImage
-import com.example.mystoryapp.data.local.room.StoryImageDao
+import com.example.mystoryapp.data.local.room.Story
+import com.example.mystoryapp.data.local.room.StoryDao
 import com.example.mystoryapp.data.remote.response.AddStoryResponse
 import com.example.mystoryapp.data.remote.response.DetailStoryResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class StoryRepository @Inject constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference,
-    private val storyImageDao: StoryImageDao
+    private val storyDao: StoryDao
     ) {
 
     suspend fun saveSession(user: UserModel) {
@@ -52,9 +52,9 @@ class StoryRepository @Inject constructor(
         return apiService.addStory(token, imagePhoto, description)
     }
 
-    suspend fun addImageToDatabase(image: StoryImage) {
-        storyImageDao.insertImage(image)
+    suspend fun addStoryToDatabase(image: Story) {
+        storyDao.insertStory(image)
     }
 
-    fun getAllStoryImages() = storyImageDao.getAllStoryImage()
+    fun getStories() = storyDao.getStories()
 }

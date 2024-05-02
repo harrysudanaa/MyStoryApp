@@ -13,7 +13,13 @@
     <string name="settings_title">Settings</string>
     <string name="logout_title">Logout</string>
 
-    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="appwidget_text" translatable="false">List Story</string>
     <string name="app_widget_description" translatable="false">This is an app widget description</string>
-    <string name="empty_text" translatable="false">NO DATA</string>
+    <string name="empty_text" translatable="false">No Data</string>
+    <string name="upload_story_title">Upload Story</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
+    <string name="story_by">Story by</string>
 </resources>

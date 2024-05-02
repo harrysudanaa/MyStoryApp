@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.mystoryapp.BuildConfig
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
-import com.example.mystoryapp.data.local.room.StoryImageDao
+import com.example.mystoryapp.data.local.room.StoryDao
 import com.example.mystoryapp.data.remote.retrofit.ApiService
 import com.example.mystoryapp.data.repository.StoryRepository
 import dagger.Module
@@ -60,7 +60,7 @@ object AppModule {
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(gsonConverterFactory)
             .client(client)
             .build()
     }
@@ -74,7 +74,8 @@ object AppModule {
     fun provideRepository(
         apiService: ApiService,
         userPreference: UserPreference,
-        storyImageDao: StoryImageDao): StoryRepository {
-        return StoryRepository(apiService, userPreference, storyImageDao)
+        storyDao: StoryDao
+    ): StoryRepository {
+        return StoryRepository(apiService, userPreference, storyDao)
     }
 }

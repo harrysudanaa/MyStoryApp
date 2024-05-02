@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
-import com.example.mystoryapp.data.local.room.StoryImage
+import com.example.mystoryapp.data.local.room.Story
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.repository.StoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,9 +51,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun addImageToDatabase(image: StoryImage) {
+    fun addStoryToDatabase(story: Story) {
         viewModelScope.launch {
-            repository.addImageToDatabase(image)
+            repository.addStoryToDatabase(story)
         }
     }
 

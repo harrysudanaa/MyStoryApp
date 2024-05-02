@@ -87,17 +87,20 @@ class AddStoryActivity : AppCompatActivity() {
 
         binding.btnUpload.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                addStoryViewModel.isLoading.observe(this) {
+                    showLoading(it)
+                }
                 addStory()
             }
             addStoryViewModel.status.observe(this) { status ->
-                showToast(status.message.toString())
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-            }
-
-            addStoryViewModel.isLoading.observe(this) {
-                showLoading(it)
+                if (status.error == false) {
+                    showToast(status.message.toString())
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                } else {
+                    showToast("${status.message}")
+                }
             }
         }
     }
@@ -151,10 +154,13 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        val layout = binding.addStoryContainer
         if (isLoading) {
             binding.progressBarAddStory.visibility = View.VISIBLE
+            layout.alpha = 0.5f
         } else {
             binding.progressBarAddStory.visibility = View.GONE
+            layout.alpha = 1f
         }
     }
 

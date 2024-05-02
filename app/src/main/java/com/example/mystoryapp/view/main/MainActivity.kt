@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.room.StoryImage
+import com.example.mystoryapp.data.local.room.Story
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
@@ -29,20 +29,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
     private val storyAdapter = StoryAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         mainViewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 val intent = Intent(this, WelcomeActivity::class.java)
                 startActivity(intent)
+            } else {
+                setContentView(binding.root)
+                setupView()
+                setupAction()
             }
         }
-
-        setupView()
-        setupAction()
     }
 
     @SuppressLint("RestrictedApi")
@@ -97,26 +98,39 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
-        setSupportActionBar(binding.toolbarMain.root)
 
-        binding.rvListStory.layoutManager = LinearLayoutManager(this)
-        binding.rvListStory.adapter = storyAdapter
-
-        mainViewModel.getSession().observe(this) { user ->
-            mainViewModel.getStories("Bearer ${user.token}")
-        }
-
-        mainViewModel.story.observe(this) { story ->
-            setStoryData(story)
-            story.forEach { storyItem ->
-                val imageUri = storyItem.photoUrl
-                val imageData = StoryImage(imageStory = imageUri)
-                mainViewModel.addImageToDatabase(imageData)
+        with (binding) {
+            setSupportActionBar(toolbarMain.root)
+            rvListStory.apply {
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter = storyAdapter
             }
         }
 
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
+        with (mainViewModel) {
+            getSession().observe(this@MainActivity) { user ->
+                getStories("Bearer ${user.token}")
+            }
+
+            story.observe(this@MainActivity) { story ->
+                setStoryData(story)
+                story.forEach { storyItem ->
+                    with (storyItem) {
+                        val storyData = Story(
+                            id = id.toString(),
+                            name = name.toString(),
+                            description = description.toString(),
+                            photoUrl = photoUrl.toString(),
+                            createdAt = createdAt.toString()
+                        )
+                        addStoryToDatabase(storyData)
+                    }
+                }
+            }
+
+            isLoading.observe(this@MainActivity) {
+                showLoading(it)
+            }
         }
     }
 

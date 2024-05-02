@@ -13,4 +13,9 @@
     <string name="indonesian_lang">Bahasa Indonesia</string>
     <string name="settings_title">Pengaturan</string>
     <string name="logout_title">Keluar</string>
+    <string name="upload_story_title">Tambah Cerita</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Deskripsi</string>
+    <string name="upload">Unggah</string>
 </resources>
