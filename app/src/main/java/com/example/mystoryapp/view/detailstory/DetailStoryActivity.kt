@@ -2,21 +2,16 @@ package com.example.mystoryapp.view.detailstory
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
-import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivityDetailStoryBinding
-import com.example.mystoryapp.view.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailStoryBinding
-    private val detailStoryViewModel by viewModels<DetailStoryViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+    private val detailStoryViewModel by viewModels<DetailStoryViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +23,25 @@ class DetailStoryActivity : AppCompatActivity() {
 
     private fun setupView() {
         val idStory = intent.getStringExtra(EXTRA_ID)
-        idStory?.let { detailStoryViewModel.getDetailStory(idStory) }
 
-        detailStoryViewModel.detailStory.observe(this) { detailStory ->
-            binding.tvDetailStoryTitle.text = detailStory.story?.name
-            binding.tvDetailStoryDesc.text = detailStory.story?.description
+        with (detailStoryViewModel) {
+            getSession().observe(this@DetailStoryActivity) { user ->
+                val userToken = "Bearer ${user.token}"
+                idStory?.let { getDetailStory(userToken, idStory) }
+            }
 
-            Glide.with(this)
-                .load(detailStory.story?.photoUrl)
-                .into(binding.ivDetailStory)
-        }
+            detailStory.observe(this@DetailStoryActivity) { detailStory ->
+                binding.tvDetailName.text = detailStory.story?.name
+                binding.tvDetailDescription.text = detailStory.story?.description
 
-        detailStoryViewModel.isLoading.observe(this) {
-            showLoading(it)
+                Glide.with(this@DetailStoryActivity)
+                    .load(detailStory.story?.photoUrl)
+                    .into(binding.ivDetailPhoto)
+            }
+
+            isLoading.observe(this@DetailStoryActivity) {
+                showLoading(it)
+            }
         }
     }
 
