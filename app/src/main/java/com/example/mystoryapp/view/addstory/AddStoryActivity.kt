@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -16,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivityAddStoryBinding
 import com.example.mystoryapp.utils.reduceFileImage
 import com.example.mystoryapp.utils.uriToFile
@@ -38,9 +38,9 @@ class AddStoryActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            showToast("Permission Request Granted")
+            showToast(getString(R.string.permission_request_granted))
         } else {
-            showToast("Permission Request Denied")
+            showToast(getString(R.string.permission_request_denied))
         }
     }
 
@@ -51,7 +51,7 @@ class AddStoryActivity : AppCompatActivity() {
             currentImageUri = uri
             showImage()
         } else {
-            Log.d("PhotoPicker", "No media selected.")
+            showToast(getString(R.string.no_media_selected))
         }
     }
 
@@ -85,7 +85,7 @@ class AddStoryActivity : AppCompatActivity() {
             startCameraX()
         }
 
-        binding.btnUpload.setOnClickListener {
+        binding.buttonAdd.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 addStoryViewModel.isLoading.observe(this) {
                     showLoading(it)
@@ -133,11 +133,11 @@ class AddStoryActivity : AppCompatActivity() {
             val userToken = "Bearer ${user.token}"
             currentImageUri?.let { uri ->
                 val imageFile = uriToFile(uri, this).reduceFileImage()
-                val description = binding.edDescription.text.toString()
+                val description = binding.edAddDescription.text.toString()
 
                 if (imageFile.length() > 1024 * 1024) {
                     // When image size greater than 1 MB
-                    showToast("Image size exceeds 1MB limit")
+                    showToast(getString(R.string.image_size_limit))
                 } else {
                     val requestBody = description.toRequestBody("text/plain".toMediaType())
                     val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -149,7 +149,7 @@ class AddStoryActivity : AppCompatActivity() {
 
                     addStoryViewModel.addStory(userToken, multipartBody, requestBody)
                 }
-            } ?: showToast("Empty Image")
+            } ?: showToast(getString(R.string.empty_image))
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.mystoryapp.view.signup
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,7 +9,9 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivitySignupBinding
+import com.example.mystoryapp.view.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,48 +41,59 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.signupButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
-            signupViewModel.register(name, email, password)
+        with (binding) {
+            signupButton.setOnClickListener {
+                val name = edRegisterName.text.toString()
+                val email = edRegisterEmail.text.toString()
+                val password = edRegisterPassword.text.toString()
 
-            signupViewModel.message.observe(this) { message ->
-                if (message != null) {
-                    if (message.error == false) {
-                        AlertDialog.Builder(this).apply {
-                            setTitle("Register")
-                            setMessage(message.message.toString())
-                            setPositiveButton("Next") { _, _ ->
-                                finish()
+                with (signupViewModel) {
+                    register(name, email, password)
+
+                    message.observe(this@SignupActivity) { message ->
+                        if (message != null) {
+                            if (message.error == false) {
+                                AlertDialog.Builder(this@SignupActivity).apply {
+                                    setTitle(getString(R.string.register_title_alert))
+                                    setMessage(message.message.toString())
+                                    setPositiveButton(getString(R.string.next_action)) { _, _ ->
+                                        moveToLoginActivity()
+                                    }
+                                    create()
+                                    show()
+                                }
+                            } else {
+                                AlertDialog.Builder(this@SignupActivity).apply {
+                                    setTitle(getString(R.string.register_title_alert))
+                                    setMessage(message.message.toString())
+                                    setPositiveButton(getString(R.string.next_action)) { _, _ ->
+                                        finish()
+                                        startActivity(intent)
+                                    }
+                                    create()
+                                    show()
+                                }
                             }
-                            create()
-                            show()
                         }
-                    } else {
-                        AlertDialog.Builder(this).apply {
-                            setTitle("Register")
-                            setMessage(message.message.toString())
-                            setPositiveButton("Next") { _, _ ->
-                                finish()
-                            }
-                            create()
-                            show()
-                        }
+                    }
+
+                    isLoading.observe(this@SignupActivity) {
+                        showLoading(it)
                     }
                 }
             }
-
-            signupViewModel.isLoading.observe(this) {
-                showLoading(it)
-            }
         }
+    }
+
+    private fun moveToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBarSignUp.visibility = View.VISIBLE
-            // set alpha to 0.5
             val layout = binding.containerSignUp
             layout.alpha = 0.5f
         } else {

@@ -19,6 +19,7 @@ class SettingsActivity : AppCompatActivity() {
         setupAction()
     }
 
+    @Suppress("DEPRECATION")
     private fun setupAction() {
         binding.btnInLocale.setOnClickListener {
             val languageCode = "in"

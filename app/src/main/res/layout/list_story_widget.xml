@@ -38,10 +38,10 @@
         android:layout_gravity="center"
         android:text="@string/empty_text"
         android:textColor="@color/md_theme_light_onPrimary"
+        android:background="@color/md_theme_light_primary"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:background="@color/md_theme_light_primary"
         android:visibility="gone" />
 
 </FrameLayout>

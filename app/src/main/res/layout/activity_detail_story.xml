@@ -18,10 +18,12 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:id="@+id/ivDetailStory"
+            android:id="@+id/ivDetailPhoto"
             android:layout_width="0dp"
             android:layout_height="200dp"
+            android:contentDescription="@string/image_story"
             android:scaleType="centerCrop"
+            android:transitionName="imageViewDetailStory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,12 +47,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvDetailStoryDesc"
+                android:id="@+id/tvDetailDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:transitionName="textViewDetailStoryDesc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -67,14 +70,15 @@
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDetailStoryDesc" />
+                app:layout_constraintTop_toBottomOf="@+id/tvDetailDescription" />
 
             <TextView
-                android:id="@+id/tvDetailStoryName"
+                android:id="@+id/tvDetailName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:textStyle="bold"
+                android:transitionName="textViewDetailStoryName"
                 app:layout_constraintBottom_toBottomOf="@+id/tvNameTitle"
                 app:layout_constraintStart_toEndOf="@+id/tvNameTitle"
                 app:layout_constraintTop_toTopOf="@+id/tvNameTitle"

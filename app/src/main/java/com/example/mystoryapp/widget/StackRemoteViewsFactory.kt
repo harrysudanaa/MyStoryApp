@@ -8,19 +8,14 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.datastore.preferences.UserModel
+import com.example.mystoryapp.data.local.room.Story
 import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.utils.uriToBitmap
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 class StackRemoteViewsFactory(private val context: Context, private val repository: StoryRepository) : RemoteViewsService.RemoteViewsFactory {
 
     private val widgetItems = ArrayList<Bitmap>()
+    private val listStories = ArrayList<Story>()
 
     override fun onCreate() {
 
@@ -28,15 +23,16 @@ class StackRemoteViewsFactory(private val context: Context, private val reposito
 
     override fun onDataSetChanged() {
         widgetItems.clear()
+        listStories.clear()
         try {
-            val imageList = repository.getStories()
-            println("factory widget: $imageList")
-            imageList.forEach { storyItem ->
+            val stories = repository.getStories()
+            stories.forEach { storyItem ->
                 val imageUri = Uri.parse(storyItem.photoUrl)
                 val imageBitmap = uriToBitmap(context, imageUri)
                 if (imageBitmap != null) {
                     widgetItems.add(imageBitmap)
                 }
+                listStories.add(storyItem)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -55,7 +51,7 @@ class StackRemoteViewsFactory(private val context: Context, private val reposito
         rv.setImageViewBitmap(R.id.imageView, widgetItems[position])
 
         val extras = bundleOf(
-            ListStoryWidget.EXTRA_ITEM to position
+            ListStoryWidget.EXTRA_ITEM to listStories[position].id
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)

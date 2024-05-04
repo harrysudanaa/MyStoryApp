@@ -20,8 +20,8 @@ import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.addstory.AddStoryActivity
+import com.example.mystoryapp.view.login.LoginActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
-import com.example.mystoryapp.view.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
-                val intent = Intent(this, WelcomeActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {
                 setContentView(binding.root)
@@ -61,12 +61,12 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.logout -> {
                 AlertDialog.Builder(this).apply {
-                    setTitle("Logout")
-                    setMessage("Are you sure to logout?")
-                    setPositiveButton("Yes") { _, _ ->
+                    setTitle(getString(R.string.logout))
+                    setMessage(getString(R.string.logout_confirmation))
+                    setPositiveButton(getString(R.string.positive_button)) { _, _ ->
                         mainViewModel.logout()
                     }
-                    setNegativeButton("No") { _, _ ->
+                    setNegativeButton(getString(R.string.negative_button)) { _, _ ->
                         return@setNegativeButton
                     }
                     create()
@@ -113,6 +113,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             story.observe(this@MainActivity) { story ->
+                if (story.isEmpty()) {
+                    binding.tvEmptyData.visibility = View.VISIBLE
+                }
                 setStoryData(story)
                 story.forEach { storyItem ->
                     with (storyItem) {

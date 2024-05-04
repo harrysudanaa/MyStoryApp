@@ -24,22 +24,24 @@ class DetailStoryActivity : AppCompatActivity() {
     private fun setupView() {
         val idStory = intent.getStringExtra(EXTRA_ID)
 
-        detailStoryViewModel.getSession().observe(this) { user ->
-            val userToken = "Bearer ${user.token}"
-            idStory?.let { detailStoryViewModel.getDetailStory(userToken, idStory) }
-        }
+        with (detailStoryViewModel) {
+            getSession().observe(this@DetailStoryActivity) { user ->
+                val userToken = "Bearer ${user.token}"
+                idStory?.let { getDetailStory(userToken, idStory) }
+            }
 
-        detailStoryViewModel.detailStory.observe(this) { detailStory ->
-            binding.tvDetailStoryName.text = detailStory.story?.name
-            binding.tvDetailStoryDesc.text = detailStory.story?.description
+            detailStory.observe(this@DetailStoryActivity) { detailStory ->
+                binding.tvDetailName.text = detailStory.story?.name
+                binding.tvDetailDescription.text = detailStory.story?.description
 
-            Glide.with(this)
-                .load(detailStory.story?.photoUrl)
-                .into(binding.ivDetailStory)
-        }
+                Glide.with(this@DetailStoryActivity)
+                    .load(detailStory.story?.photoUrl)
+                    .into(binding.ivDetailPhoto)
+            }
 
-        detailStoryViewModel.isLoading.observe(this) {
-            showLoading(it)
+            isLoading.observe(this@DetailStoryActivity) {
+                showLoading(it)
+            }
         }
     }
 

@@ -45,6 +45,8 @@
                     android:id="@+id/ivAddStory"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/image_story"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +89,7 @@
             tools:layout_editor_absoluteY="280dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edDescription"
+                android:id="@+id/edAddDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
@@ -96,7 +98,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnUpload"
+            android:id="@+id/buttonAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/upload"

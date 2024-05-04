@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViews
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.example.mystoryapp.R
+import com.example.mystoryapp.view.detailstory.DetailStoryActivity
 
 /**
  * Implementation of App Widget functionality.
@@ -37,13 +37,25 @@ class ListStoryWidget : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action != null) {
-            val viewIndex = intent.getIntExtra(EXTRA_ITEM, 0)
-            Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
+            val storyId = intent.getStringExtra(EXTRA_ITEM)
+            val intentDetailStoryActivity = Intent(context, DetailStoryActivity::class.java)
+            intentDetailStoryActivity.putExtra(DetailStoryActivity.EXTRA_ID, storyId)
+
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intentDetailStoryActivity,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+                }
+                else 0
+            )
+            pendingIntent.send()
         }
     }
 
     companion object {
-        private const val TOAST_ACTION = "com.example.mystoryapp.TOAST_ACTION"
+        private const val CLICK_ACTION = "com.example.mystoryapp.CLICK_ACTION"
         const val EXTRA_ITEM = "com.example.mystoryapp.EXTRA_ITEM"
 
         internal fun updateAppWidget(
@@ -61,17 +73,17 @@ class ListStoryWidget : AppWidgetProvider() {
             views.setRemoteAdapter(R.id.stack_view, intent)
             views.setEmptyView(R.id.stack_view, R.id.empty_view)
 
-            val toastIntent = Intent(context, ListStoryWidget::class.java)
-            toastIntent.action = TOAST_ACTION
-            toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            val clickIntent = Intent(context, ListStoryWidget::class.java)
+            clickIntent.action = CLICK_ACTION
+            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
 
-            val toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
+            val clickPendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
                 }
                 else 0
             )
-            views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+            views.setPendingIntentTemplate(R.id.stack_view, clickPendingIntent)
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)

@@ -28,6 +28,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            android:contentDescription="@string/image_signup"
             app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
             app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameEditTextLayout"
+            android:id="@+id/edRegisterNameLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,18 +64,18 @@
             app:startIconDrawable="@drawable/ic_baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nameEditText"
+                android:id="@+id/edRegisterName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:inputType="text"
                 android:paddingStart="50dp"
                 android:paddingEnd="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailEditTextLayout"
+            android:id="@+id/edRegisterEmailLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,11 +84,11 @@
             android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout"
+            app:layout_constraintTop_toBottomOf="@+id/edRegisterNameLayout"
             app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <com.example.mystoryapp.view.customview.MyEmailEditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/edRegisterEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -98,7 +99,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordEditTextLayout"
+            android:id="@+id/edRegisterPasswordLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,11 +109,11 @@
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
+            app:layout_constraintTop_toBottomOf="@+id/edRegisterEmailLayout"
             app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
             <com.example.mystoryapp.view.customview.MyPasswordEditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/edRegisterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -132,7 +133,7 @@
             android:text="@string/signup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/edRegisterPasswordLayout" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineHorizontal"
