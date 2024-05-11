@@ -45,4 +45,5 @@
     <string name="logout">Logout</string>
     <string name="positive_button">Yes</string>
     <string name="negative_button">No</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
