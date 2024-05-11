@@ -21,6 +21,7 @@ import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.addstory.AddStoryActivity
 import com.example.mystoryapp.view.login.LoginActivity
+import com.example.mystoryapp.view.maps.MapsActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,6 +77,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.settings -> {
                 val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.maps -> {
+                val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 startActivity(intent)
                 true
             }
