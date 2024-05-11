@@ -12,6 +12,7 @@
         android:maxSdkVersion="28" />
 
     <application
+        android:name=".MyStoryApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,6 +22,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyStoryApp"
         tools:targetApi="31">
+        <receiver
+            android:name=".widget.ListStoryWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/list_story_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".view.settings.SettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".view.camera.CameraActivity"
             android:exported="false" />
@@ -35,9 +51,6 @@
             android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.welcome.WelcomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.main.MainActivity"
@@ -61,6 +74,9 @@
                 android:name="photopicker_activity:0:required"
                 android:value="" />
         </service>
+        <service
+            android:name="com.example.mystoryapp.widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

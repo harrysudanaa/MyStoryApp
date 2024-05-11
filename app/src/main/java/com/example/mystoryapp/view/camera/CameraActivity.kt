@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.OrientationEventListener
 import android.view.Surface
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -14,9 +13,6 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.mystoryapp.R
 import com.example.mystoryapp.databinding.ActivityCameraBinding
 import com.example.mystoryapp.utils.createCustomTempFile
 
@@ -66,7 +62,7 @@ class CameraActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.switchCamera.setOnClickListener{
-            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) {
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
                 CameraSelector.DEFAULT_FRONT_CAMERA
             } else {
                 CameraSelector.DEFAULT_BACK_CAMERA

@@ -1,5 +1,6 @@
 package com.example.mystoryapp.view.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,40 +12,48 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
+import com.example.mystoryapp.data.local.room.Story
 import com.example.mystoryapp.data.remote.response.ListStoryItem
-import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.StoryAdapter
-import com.example.mystoryapp.view.ViewModelFactory
 import com.example.mystoryapp.view.addstory.AddStoryActivity
-import com.example.mystoryapp.view.welcome.WelcomeActivity
+import com.example.mystoryapp.view.login.LoginActivity
+import com.example.mystoryapp.view.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-    private val mainViewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+    private val mainViewModel by viewModels<MainViewModel>()
     private val storyAdapter = StoryAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         mainViewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
-                val intent = Intent(this, WelcomeActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+            } else {
+                setContentView(binding.root)
+                setupView()
+                setupAction()
             }
         }
-
-        setupView()
-        setupAction()
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
+
+        if (menu is MenuBuilder) {
+            menu.setOptionalIconsVisible(true)
+        }
+
         return true
     }
 
@@ -52,17 +61,22 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.logout -> {
                 AlertDialog.Builder(this).apply {
-                    setTitle("Logout")
-                    setMessage("Are you sure to logout?")
-                    setPositiveButton("Yes") { _, _ ->
+                    setTitle(getString(R.string.logout))
+                    setMessage(getString(R.string.logout_confirmation))
+                    setPositiveButton(getString(R.string.positive_button)) { _, _ ->
                         mainViewModel.logout()
                     }
-                    setNegativeButton("No") { _, _ ->
+                    setNegativeButton(getString(R.string.negative_button)) { _, _ ->
                         return@setNegativeButton
                     }
                     create()
                     show()
                 }
+                true
+            }
+            R.id.settings -> {
+                val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                startActivity(intent)
                 true
             }
 
@@ -84,19 +98,42 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
-        setSupportActionBar(binding.toolbarMain.root)
 
-        binding.rvListStory.layoutManager = LinearLayoutManager(this)
-        binding.rvListStory.adapter = storyAdapter
-
-        mainViewModel.getStories()
-
-        mainViewModel.story.observe(this) {story ->
-            setStoryData(story)
+        with (binding) {
+            setSupportActionBar(toolbarMain.root)
+            rvListStory.apply {
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter = storyAdapter
+            }
         }
 
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
+        with (mainViewModel) {
+            getSession().observe(this@MainActivity) { user ->
+                getStories("Bearer ${user.token}")
+            }
+
+            story.observe(this@MainActivity) { story ->
+                if (story.isEmpty()) {
+                    binding.tvEmptyData.visibility = View.VISIBLE
+                }
+                setStoryData(story)
+                story.forEach { storyItem ->
+                    with (storyItem) {
+                        val storyData = Story(
+                            id = id.toString(),
+                            name = name.toString(),
+                            description = description.toString(),
+                            photoUrl = photoUrl.toString(),
+                            createdAt = createdAt.toString()
+                        )
+                        addStoryToDatabase(storyData)
+                    }
+                }
+            }
+
+            isLoading.observe(this@MainActivity) {
+                showLoading(it)
+            }
         }
     }
 
@@ -112,6 +149,4 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
-
 }
