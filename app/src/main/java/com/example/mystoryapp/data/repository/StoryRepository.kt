@@ -44,6 +44,9 @@ class StoryRepository @Inject constructor(
         return apiService.getStories(token)
     }
 
+    suspend fun getStoriesWithLocation(token: String): StoryResponse {
+        return apiService.getStoriesWithLocation(token)
+    }
     suspend fun getDetailStory(token: String, id: String): DetailStoryResponse {
         return apiService.getDetailStory(token, id)
     }
