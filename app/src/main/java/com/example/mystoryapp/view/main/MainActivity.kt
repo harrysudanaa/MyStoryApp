@@ -13,29 +13,36 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.local.room.Story
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityMainBinding
+import com.example.mystoryapp.view.LoadingStateAdapter
 import com.example.mystoryapp.view.StoryAdapter
 import com.example.mystoryapp.view.addstory.AddStoryActivity
 import com.example.mystoryapp.view.login.LoginActivity
 import com.example.mystoryapp.view.maps.MapsActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
     private val storyAdapter = StoryAdapter()
+    private var token: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        mainViewModel.getSession().observe(this) { user ->
+        mainViewModel.userSession.observe(this) { user ->
+            token = "Bearer ${user.token}"
             if (!user.isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
@@ -109,21 +116,21 @@ class MainActivity : AppCompatActivity() {
             setSupportActionBar(toolbarMain.root)
             rvListStory.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = storyAdapter
+                adapter = storyAdapter.withLoadStateFooter(
+                    LoadingStateAdapter {
+                        storyAdapter.retry()
+                    }
+                )
             }
         }
 
         with (mainViewModel) {
-            getSession().observe(this@MainActivity) { user ->
-                getStories("Bearer ${user.token}")
-            }
-
-            story.observe(this@MainActivity) { story ->
-                if (story.isEmpty()) {
+            getStories(token).observe(this@MainActivity) { story ->
+                if (story == null) {
                     binding.tvEmptyData.visibility = View.VISIBLE
                 }
                 setStoryData(story)
-                story.forEach { storyItem ->
+                story.map { storyItem: ListStoryItem ->
                     with (storyItem) {
                         val storyData = Story(
                             id = id.toString(),
@@ -143,8 +150,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStoryData(story: List<ListStoryItem>) {
-        storyAdapter.submitList(story)
+    private fun setStoryData(story: PagingData<ListStoryItem>) {
+        storyAdapter.submitData(lifecycle, story)
     }
 
     private fun showLoading(isLoading: Boolean) {
