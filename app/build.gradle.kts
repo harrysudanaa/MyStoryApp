@@ -38,7 +38,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
+        val compilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = "1.8"
+        freeCompilerArgs += compilerArgs
     }
     buildFeatures {
         viewBinding = true
@@ -82,4 +84,5 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.room.paging)
 }
