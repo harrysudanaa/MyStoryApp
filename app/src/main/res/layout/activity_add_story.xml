@@ -77,6 +77,15 @@
 
         </androidx.cardview.widget.CardView>
 
+        <CheckBox
+            android:id="@+id/cbLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/location_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvUploadImage" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutDescription"
             android:layout_width="0dp"
@@ -85,7 +94,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@id/addStoryContainer"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvUploadImage"
+            app:layout_constraintTop_toBottomOf="@id/cbLocation"
             tools:layout_editor_absoluteY="280dp">
 
             <com.google.android.material.textfield.TextInputEditText

@@ -23,12 +23,16 @@ class MainViewModel @Inject constructor(
 
     val userSession: LiveData<UserModel> = repository.getSession().asLiveData()
 
-    val stories: LiveData<PagingData<Story>> by lazy {
-        repository.getStories().cachedIn(viewModelScope)
-    }
+//    val stories: LiveData<PagingData<Story>> by lazy {
+//        repository.getStories().cachedIn(viewModelScope)
+//    }
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+    fun getStories(token: String): LiveData<PagingData<Story>> {
+        return repository.getStories(token).cachedIn(viewModelScope)
+    }
 
     fun logout() {
         viewModelScope.launch {

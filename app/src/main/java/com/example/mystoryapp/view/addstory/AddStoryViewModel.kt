@@ -31,11 +31,11 @@ class AddStoryViewModel @Inject constructor(
         return repository.getSession().asLiveData()
     }
 
-    fun addStory(token: String, imagePhoto: MultipartBody.Part, description: RequestBody) {
+    fun addStory(token: String, imagePhoto: MultipartBody.Part, description: RequestBody, latitude: RequestBody?, longitude: RequestBody?) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val response = repository.addStory(token, imagePhoto, description)
+                val response = repository.addStory(token, imagePhoto, description, latitude, longitude)
                 _status.value = response
             } catch (e: HttpException) {
                 _isLoading.value = true
