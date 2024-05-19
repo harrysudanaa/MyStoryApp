@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.mystoryapp.BuildConfig
 import com.example.mystoryapp.data.local.datastore.preferences.UserPreference
-import com.example.mystoryapp.data.local.room.StoryDao
+import com.example.mystoryapp.data.local.room.StoryDatabase
 import com.example.mystoryapp.data.remote.retrofit.ApiService
 import com.example.mystoryapp.data.repository.StoryRepository
 import dagger.Module
@@ -74,8 +74,8 @@ object AppModule {
     fun provideRepository(
         apiService: ApiService,
         userPreference: UserPreference,
-        storyDao: StoryDao
+        storyDatabase: StoryDatabase
     ): StoryRepository {
-        return StoryRepository(apiService, userPreference, storyDao)
+        return StoryRepository(apiService, userPreference, storyDatabase)
     }
 }

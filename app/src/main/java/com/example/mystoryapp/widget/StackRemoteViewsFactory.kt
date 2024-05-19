@@ -8,7 +8,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.room.Story
+import com.example.mystoryapp.data.local.room.entity.Story
 import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.utils.uriToBitmap
 
@@ -25,7 +25,7 @@ class StackRemoteViewsFactory(private val context: Context, private val reposito
         widgetItems.clear()
         listStories.clear()
         try {
-            val stories = repository.getStories()
+            val stories = repository.getListStories()
             stories.forEach { storyItem ->
                 val imageUri = Uri.parse(storyItem.photoUrl)
                 val imageBitmap = uriToBitmap(context, imageUri)

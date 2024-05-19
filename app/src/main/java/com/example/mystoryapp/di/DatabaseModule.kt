@@ -2,7 +2,6 @@ package com.example.mystoryapp.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.mystoryapp.data.local.room.StoryDao
 import com.example.mystoryapp.data.local.room.StoryDatabase
 import dagger.Module
 import dagger.Provides
@@ -21,11 +20,5 @@ object DatabaseModule {
             StoryDatabase::class.java,
             "story"
         ).build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideStoryDao(storyDatabase: StoryDatabase): StoryDao {
-        return storyDatabase.storyDao()
     }
 }
