@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.example.mystoryapp.R
@@ -21,6 +22,8 @@ import com.example.mystoryapp.utils.reduceFileImage
 import com.example.mystoryapp.utils.uriToFile
 import com.example.mystoryapp.view.camera.CameraActivity
 import com.example.mystoryapp.view.main.MainActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -34,6 +37,10 @@ class AddStoryActivity : AppCompatActivity() {
 
     private var currentImageUri: Uri? = null
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var latitude: String? = null
+    private var longitude: String? = null
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -41,6 +48,19 @@ class AddStoryActivity : AppCompatActivity() {
             showToast(getString(R.string.permission_request_granted))
         } else {
             showToast(getString(R.string.permission_request_denied))
+        }
+    }
+
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                showToast("Fine location access granted")
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                showToast("Only approximate location access granted")
+            } else -> showToast("Location access denied")
         }
     }
 
@@ -77,6 +97,28 @@ class AddStoryActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
 
+        binding.cbLocation.setOnCheckedChangeListener { _, isChecked ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            if (isChecked) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    getLocationAccess()
+                }
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null) {
+                        latitude = location.latitude.toString()
+                        longitude = location.longitude.toString()
+                    }
+                }
+            }
+        }
+
         binding.btnGallery.setOnClickListener {
             startGallery()
         }
@@ -103,6 +145,13 @@ class AddStoryActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getLocationAccess() {
+        locationPermissionRequest.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+        )
     }
 
     private fun startGallery() {
@@ -139,15 +188,17 @@ class AddStoryActivity : AppCompatActivity() {
                     // When image size greater than 1 MB
                     showToast(getString(R.string.image_size_limit))
                 } else {
-                    val requestBody = description.toRequestBody("text/plain".toMediaType())
+                    val requestDescription = description.toRequestBody("text/plain".toMediaType())
                     val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+                    val requestLatitude = latitude?.toRequestBody("text/plain".toMediaType())
+                    val requestLongitude = longitude?.toRequestBody("text/plain".toMediaType())
                     val multipartBody = MultipartBody.Part.createFormData(
                         "photo",
                         imageFile.name,
                         requestImageFile
                     )
 
-                    addStoryViewModel.addStory(userToken, multipartBody, requestBody)
+                    addStoryViewModel.addStory(userToken, multipartBody, requestDescription, requestLatitude, requestLongitude)
                 }
             } ?: showToast(getString(R.string.empty_image))
         }

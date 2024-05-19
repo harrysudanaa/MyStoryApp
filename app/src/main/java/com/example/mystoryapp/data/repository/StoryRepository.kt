@@ -50,18 +50,16 @@ class StoryRepository @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getStories(): LiveData<PagingData<Story>> {
-        return getSession().asLiveData().switchMap { user ->
-            Pager(
-                config = PagingConfig(
-                    pageSize = 5
-                ),
-                remoteMediator = StoryRemoteMediator(apiService, storyDatabase, user.token),
-                pagingSourceFactory = {
-                    storyDatabase.storyDao().getStories()
-                }
-            ).liveData
-        }
+    fun getStories(token: String): LiveData<PagingData<Story>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(apiService, storyDatabase, token),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getStories()
+            }
+        ).liveData
     }
 
     suspend fun getStoriesWithLocation(token: String): StoryResponse {
@@ -71,14 +69,8 @@ class StoryRepository @Inject constructor(
         return apiService.getDetailStory(token, id)
     }
 
-    suspend fun addStory(token: String, imagePhoto: MultipartBody.Part, description: RequestBody): AddStoryResponse {
-        return apiService.addStory(token, imagePhoto, description)
+    suspend fun addStory(token: String, imagePhoto: MultipartBody.Part, description: RequestBody, latitude: RequestBody?, longitude: RequestBody?): AddStoryResponse {
+        return apiService.addStory(token, imagePhoto, description, latitude, longitude)
     }
-
-//    suspend fun addStoryToDatabase(image: Story) {
-//        storyDatabase.storyDao().insertStory(image)
-//    }
-//
-    fun getAllStories() = storyDatabase.storyDao().getStories()
     fun getListStories() = storyDatabase.storyDao().getListStories()
 }

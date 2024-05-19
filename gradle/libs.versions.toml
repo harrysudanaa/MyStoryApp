@@ -27,6 +27,7 @@ ksp = "1.9.22-1.0.17"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "18.1.0"
 turbine = "1.0.0"
+playServicesLocation = "21.2.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
@@ -64,6 +65,7 @@ mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

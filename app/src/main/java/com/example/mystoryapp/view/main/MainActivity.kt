@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         with (mainViewModel) {
-            stories.observe(this@MainActivity) { story ->
+            getStories(token).observe(this@MainActivity) { story ->
                 if (story == null) {
                     binding.tvEmptyData.visibility = View.VISIBLE
                 }
