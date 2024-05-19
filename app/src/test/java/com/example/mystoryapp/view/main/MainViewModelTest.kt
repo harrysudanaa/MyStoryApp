@@ -64,9 +64,11 @@ class MainViewModelTest {
         val expectedStory = MutableLiveData<PagingData<Story>>()
         expectedStory.value = data
 
-        Mockito.`when`(storyRepository.getStories()).thenReturn(expectedStory)
+        val dummyUserModel = UserModel("dummyemail@gmail.com", "dummy_token", true)
 
-        val actualStory: PagingData<Story> = mainViewModel.stories.getOrAwaitValue()
+        Mockito.`when`(storyRepository.getStories(dummyUserModel.token)).thenReturn(expectedStory)
+
+        val actualStory: PagingData<Story> = mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -87,9 +89,11 @@ class MainViewModelTest {
         val expectedStory = MutableLiveData<PagingData<Story>>()
         expectedStory.value = data
 
-        Mockito.`when`(storyRepository.getStories()).thenReturn(expectedStory)
+        val dummyUserModel = UserModel("dummyemail@gmail.com", "dummy_token", true)
 
-        val actualStory: PagingData<Story> = mainViewModel.stories.getOrAwaitValue()
+        Mockito.`when`(storyRepository.getStories(dummyUserModel.token)).thenReturn(expectedStory)
+
+        val actualStory: PagingData<Story> = mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,

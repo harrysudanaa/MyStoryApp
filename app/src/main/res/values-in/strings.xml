@@ -45,4 +45,5 @@
     <string name="logout">Keluar</string>
     <string name="positive_button">Ya</string>
     <string name="negative_button">Tidak</string>
+    <string name="location_text">Lokasi</string>
 </resources>
