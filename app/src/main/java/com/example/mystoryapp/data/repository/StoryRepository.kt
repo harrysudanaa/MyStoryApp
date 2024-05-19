@@ -1,6 +1,8 @@
 package com.example.mystoryapp.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -48,16 +50,18 @@ class StoryRepository @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getStories(token: String): LiveData<PagingData<Story>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 5
-            ),
-            remoteMediator = StoryRemoteMediator(apiService, storyDatabase, token),
-            pagingSourceFactory = {
-                storyDatabase.storyDao().getStories()
-            }
-        ).liveData
+    fun getStories(): LiveData<PagingData<Story>> {
+        return getSession().asLiveData().switchMap { user ->
+            Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                remoteMediator = StoryRemoteMediator(apiService, storyDatabase, user.token),
+                pagingSourceFactory = {
+                    storyDatabase.storyDao().getStories()
+                }
+            ).liveData
+        }
     }
 
     suspend fun getStoriesWithLocation(token: String): StoryResponse {

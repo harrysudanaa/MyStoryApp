@@ -46,6 +46,10 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -85,4 +89,12 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.room.paging)
+
+    testImplementation(libs.androidx.core.testing) // InstantTaskExecutorRule
+    testImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.paging.testing)
 }

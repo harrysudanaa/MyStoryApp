@@ -3,6 +3,7 @@ package com.example.mystoryapp.view.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -20,42 +21,19 @@ class MainViewModel @Inject constructor(
     private val repository: StoryRepository
 ) : ViewModel() {
 
-    private val _userSession = MutableLiveData<UserModel>()
-    val userSession: LiveData<UserModel> = _userSession
+    val userSession: LiveData<UserModel> = repository.getSession().asLiveData()
 
-    private val _stories = MutableLiveData<PagingData<ListStoryItem>>()
-    val stories: LiveData<PagingData<ListStoryItem>> = _stories
+    val stories: LiveData<PagingData<Story>> by lazy {
+        repository.getStories().cachedIn(viewModelScope)
+    }
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-
-    init {
-        getSession()
-    }
-
-    fun getSession() {
-        viewModelScope.launch {
-            repository.getSession().collectLatest { user ->
-                _userSession.value = user
-                getStories("Bearer ${user.token}")
-            }
-        }
-    }
-
-    fun getStories(token: String): LiveData<PagingData<Story>> {
-        return repository.getStories(token).cachedIn(viewModelScope)
-    }
 
     fun logout() {
         viewModelScope.launch {
             repository.logout()
         }
     }
-
-//    fun addStoryToDatabase(story: Story) {
-//        viewModelScope.launch {
-//            repository.addStoryToDatabase(story)
-//        }
-//    }
 
 }

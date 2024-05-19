@@ -121,23 +121,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         with (mainViewModel) {
-            getStories(token).observe(this@MainActivity) { story ->
+            stories.observe(this@MainActivity) { story ->
                 if (story == null) {
                     binding.tvEmptyData.visibility = View.VISIBLE
                 }
                 setStoryData(story)
-//                story.map { storyItem: ListStoryItem ->
-//                    with (storyItem) {
-//                        val storyData = Story(
-//                            id = id.toString(),
-//                            name = name.toString(),
-//                            description = description.toString(),
-//                            photoUrl = photoUrl.toString(),
-//                            createdAt = createdAt.toString()
-//                        )
-//                        addStoryToDatabase(storyData)
-//                    }
-//                }
             }
 
             isLoading.observe(this@MainActivity) {
