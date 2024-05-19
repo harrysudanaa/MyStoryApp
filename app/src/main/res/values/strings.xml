@@ -45,6 +45,9 @@
     <string name="logout">Logout</string>
     <string name="positive_button">Yes</string>
     <string name="negative_button">No</string>
-    <string name="title_activity_maps">MapsActivity</string>
-    <string name="retry">Retry</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+    <string name="retry" translatable="false">Retry</string>
+    <string name="bearer_token" translatable="false">Bearer %1$s</string>
+    <string name="style_parsing_failed" translatable="false">Style parsing failed.</string>
+    <string name="can_t_find_style_error" translatable="false">"Can't find style. Error: "</string>
 </resources>

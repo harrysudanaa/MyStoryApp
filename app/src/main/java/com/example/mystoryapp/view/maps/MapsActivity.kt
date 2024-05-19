@@ -1,18 +1,21 @@
 package com.example.mystoryapp.view.maps
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mystoryapp.R
-
+import com.example.mystoryapp.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.mystoryapp.databinding.ActivityMapsBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -23,9 +26,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-     binding = ActivityMapsBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+        binding = ActivityMapsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -34,7 +36,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         with (mapsViewModel) {
             getSession().observe(this@MapsActivity) { user ->
-                getStoriesWithLocation("Bearer ${user.token}")
+                getStoriesWithLocation(getString(R.string.bearer_token, user.token))
             }
         }
     }
@@ -54,6 +56,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         .snippet(data.description)
                 )
             }
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.first().lat!!, location.first().lon!!)))
         }
+
+        try {
+            val success = googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.map_style
+                )
+            )
+
+            if (!success) {
+                Log.e(TAG, getString(R.string.style_parsing_failed))
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, getString(R.string.can_t_find_style_error), e)
+        }
+    }
+
+    companion object {
+        const val TAG = "MapsActivity"
     }
 }
