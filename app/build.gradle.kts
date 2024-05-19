@@ -38,11 +38,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
+        val compilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = "1.8"
+        freeCompilerArgs += compilerArgs
     }
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 }
 
@@ -82,4 +88,13 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.room.paging)
+
+    testImplementation(libs.androidx.core.testing) // InstantTaskExecutorRule
+    testImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.paging.testing)
 }

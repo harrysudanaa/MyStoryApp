@@ -13,13 +13,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.room.Story
-import com.example.mystoryapp.data.remote.response.ListStoryItem
+import com.example.mystoryapp.data.local.room.entity.Story
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.view.LoadingStateAdapter
 import com.example.mystoryapp.view.StoryAdapter
@@ -28,7 +25,6 @@ import com.example.mystoryapp.view.login.LoginActivity
 import com.example.mystoryapp.view.maps.MapsActivity
 import com.example.mystoryapp.view.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -125,23 +121,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         with (mainViewModel) {
-            getStories(token).observe(this@MainActivity) { story ->
+            stories.observe(this@MainActivity) { story ->
                 if (story == null) {
                     binding.tvEmptyData.visibility = View.VISIBLE
                 }
                 setStoryData(story)
-                story.map { storyItem: ListStoryItem ->
-                    with (storyItem) {
-                        val storyData = Story(
-                            id = id.toString(),
-                            name = name.toString(),
-                            description = description.toString(),
-                            photoUrl = photoUrl.toString(),
-                            createdAt = createdAt.toString()
-                        )
-                        addStoryToDatabase(storyData)
-                    }
-                }
             }
 
             isLoading.observe(this@MainActivity) {
@@ -150,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStoryData(story: PagingData<ListStoryItem>) {
+    private fun setStoryData(story: PagingData<Story>) {
         storyAdapter.submitData(lifecycle, story)
     }
 
