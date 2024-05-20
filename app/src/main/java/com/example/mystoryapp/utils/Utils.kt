@@ -32,7 +32,7 @@ fun uriToFile(imageUri: Uri, context: Context): File {
 
     val buffer = ByteArray(1024)
     var length: Int
-    
+
     while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
     outputStream.close()
     inputStream.close()

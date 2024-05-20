@@ -1,24 +1,23 @@
 package com.example.mystoryapp.view.maps
 
 import android.util.Log
-import retrofit2.HttpException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.example.mystoryapp.data.remote.response.StoryResponse
-import com.example.mystoryapp.data.repository.StoryRepository
 import androidx.lifecycle.viewModelScope
 import com.example.mystoryapp.data.local.datastore.preferences.UserModel
 import com.example.mystoryapp.data.remote.response.ListStoryItem
+import com.example.mystoryapp.data.repository.StoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class MapsViewModel @Inject constructor(
     private val repository: StoryRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _location = MutableLiveData<List<ListStoryItem>>()
     val location: LiveData<List<ListStoryItem>> = _location

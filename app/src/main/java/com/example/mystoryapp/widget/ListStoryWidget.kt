@@ -47,8 +47,7 @@ class ListStoryWidget : AppWidgetProvider() {
                 intentDetailStoryActivity,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                }
-                else 0
+                } else 0
             )
             pendingIntent.send()
         }
@@ -77,11 +76,11 @@ class ListStoryWidget : AppWidgetProvider() {
             clickIntent.action = CLICK_ACTION
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
 
-            val clickPendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent,
+            val clickPendingIntent = PendingIntent.getBroadcast(
+                context, 0, clickIntent,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                }
-                else 0
+                } else 0
             )
             views.setPendingIntentTemplate(R.id.stack_view, clickPendingIntent)
 

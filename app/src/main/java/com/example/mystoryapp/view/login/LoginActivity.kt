@@ -42,16 +42,25 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAnimation() {
         val duration: Long = 400
 
-        with (binding) {
-            val ivLoginAnimate = ObjectAnimator.ofFloat(ivLogin, View.ALPHA, 1f).setDuration(duration)
-            val tvLoginTitleAnimate = ObjectAnimator.ofFloat(tvLoginTitle, View.ALPHA, 1f).setDuration(duration)
-            val edEmailLayoutAnimate = ObjectAnimator.ofFloat(edEmailLayout, View.ALPHA, 1f).setDuration(duration)
-            val edLoginEmailAnimate = ObjectAnimator.ofFloat(edLoginEmail, View.ALPHA, 1f).setDuration(duration)
-            val edPasswordLayoutAnimate = ObjectAnimator.ofFloat(edPasswordLayout, View.ALPHA, 1f).setDuration(duration)
-            val edLoginPasswordAnimate = ObjectAnimator.ofFloat(edLoginPassword, View.ALPHA, 1f).setDuration(duration)
-            val btnLoginAnimate = ObjectAnimator.ofFloat(btnLogin, View.ALPHA, 1f).setDuration(duration)
-            val tvMoveToSignupAnimate = ObjectAnimator.ofFloat(tvMoveToSignup, View.ALPHA, 1f).setDuration(duration)
-            val tvSignupAnimate = ObjectAnimator.ofFloat(tvSignup, View.ALPHA, 1f).setDuration(duration)
+        with(binding) {
+            val ivLoginAnimate =
+                ObjectAnimator.ofFloat(ivLogin, View.ALPHA, 1f).setDuration(duration)
+            val tvLoginTitleAnimate =
+                ObjectAnimator.ofFloat(tvLoginTitle, View.ALPHA, 1f).setDuration(duration)
+            val edEmailLayoutAnimate =
+                ObjectAnimator.ofFloat(edEmailLayout, View.ALPHA, 1f).setDuration(duration)
+            val edLoginEmailAnimate =
+                ObjectAnimator.ofFloat(edLoginEmail, View.ALPHA, 1f).setDuration(duration)
+            val edPasswordLayoutAnimate =
+                ObjectAnimator.ofFloat(edPasswordLayout, View.ALPHA, 1f).setDuration(duration)
+            val edLoginPasswordAnimate =
+                ObjectAnimator.ofFloat(edLoginPassword, View.ALPHA, 1f).setDuration(duration)
+            val btnLoginAnimate =
+                ObjectAnimator.ofFloat(btnLogin, View.ALPHA, 1f).setDuration(duration)
+            val tvMoveToSignupAnimate =
+                ObjectAnimator.ofFloat(tvMoveToSignup, View.ALPHA, 1f).setDuration(duration)
+            val tvSignupAnimate =
+                ObjectAnimator.ofFloat(tvSignup, View.ALPHA, 1f).setDuration(duration)
 
             AnimatorSet().apply {
                 playSequentially(
@@ -82,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
 
-        with (binding) {
+        with(binding) {
             ivLogin.alpha = 0f
             tvLoginTitle.alpha = 0f
             edLoginEmail.alpha = 0f
@@ -105,12 +114,17 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edLoginEmail.text.toString()
             val password = binding.edLoginPassword.text.toString()
 
-            with (loginViewModel) {
+            with(loginViewModel) {
                 login(email, password)
 
                 loginStatus.observe(this@LoginActivity) { status ->
                     if (status.error == false) {
-                        loginViewModel.saveSession(UserModel(email =  email, token = "${status.loginResult?.token}"))
+                        loginViewModel.saveSession(
+                            UserModel(
+                                email = email,
+                                token = "${status.loginResult?.token}"
+                            )
+                        )
                         AlertDialog.Builder(this@LoginActivity).apply {
                             setTitle(getString(R.string.login_title_alert))
                             setMessage(getString(R.string.login_message_alert))

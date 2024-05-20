@@ -24,7 +24,7 @@ class DetailStoryActivity : AppCompatActivity() {
     private fun setupView() {
         val idStory = intent.getStringExtra(EXTRA_ID)
 
-        with (detailStoryViewModel) {
+        with(detailStoryViewModel) {
             getSession().observe(this@DetailStoryActivity) { user ->
                 val userToken = "Bearer ${user.token}"
                 idStory?.let { getDetailStory(userToken, idStory) }

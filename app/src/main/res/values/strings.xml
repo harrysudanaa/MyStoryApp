@@ -39,8 +39,6 @@
     <string name="no_data">No data</string>
     <string name="button_image_capture">Button Image Capture</string>
     <string name="button_image_switch_camera">Button Image Switch Camera</string>
-    <string name="message_welcome_page">Share experiences, discover new ideas, and experience a world of meaning with My Story!</string>
-    <string name="title_welcome_page">Welcome to the My Story App!</string>
     <string name="logout_confirmation">Are you sure to logout?</string>
     <string name="logout">Logout</string>
     <string name="positive_button">Yes</string>

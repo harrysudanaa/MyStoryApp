@@ -58,9 +58,12 @@ class AddStoryActivity : AppCompatActivity() {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                 showToast("Fine location access granted")
             }
+
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                 showToast("Only approximate location access granted")
-            } else -> showToast("Location access denied")
+            }
+
+            else -> showToast("Location access denied")
         }
     }
 
@@ -148,9 +151,11 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
     private fun getLocationAccess() {
-        locationPermissionRequest.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION)
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
         )
     }
 
@@ -198,7 +203,13 @@ class AddStoryActivity : AppCompatActivity() {
                         requestImageFile
                     )
 
-                    addStoryViewModel.addStory(userToken, multipartBody, requestDescription, requestLatitude, requestLongitude)
+                    addStoryViewModel.addStory(
+                        userToken,
+                        multipartBody,
+                        requestDescription,
+                        requestLatitude,
+                        requestLongitude
+                    )
                 }
             } ?: showToast(getString(R.string.empty_image))
         }

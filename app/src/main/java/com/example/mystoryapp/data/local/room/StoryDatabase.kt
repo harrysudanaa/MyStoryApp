@@ -8,7 +8,7 @@ import com.example.mystoryapp.data.local.room.entity.RemoteKeys
 import com.example.mystoryapp.data.local.room.entity.Story
 
 @Database(entities = [Story::class, RemoteKeys::class], version = 2, exportSchema = false)
-abstract class StoryDatabase: RoomDatabase() {
+abstract class StoryDatabase : RoomDatabase() {
     abstract fun storyDao(): StoryDao
     abstract fun remoteKeysDao(): RemoteKeysDao
 }

@@ -18,10 +18,10 @@ class SignupViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _message = MutableLiveData<ErrorResponse>()
-    val message : LiveData<ErrorResponse> = _message
+    val message: LiveData<ErrorResponse> = _message
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {

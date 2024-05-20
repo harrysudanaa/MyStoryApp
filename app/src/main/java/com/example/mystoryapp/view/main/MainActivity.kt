@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
     private val storyAdapter = StoryAdapter()
     private var token: String = ""
@@ -78,11 +78,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+
             R.id.settings -> {
                 val intent = Intent(this@MainActivity, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             R.id.maps -> {
                 val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 startActivity(intent)
@@ -105,10 +107,13 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
 
-        with (binding) {
+        with(binding) {
             setSupportActionBar(toolbarMain.root)
             rvListStory.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
@@ -120,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        with (mainViewModel) {
+        with(mainViewModel) {
             getStories(token).observe(this@MainActivity) { story ->
                 if (story == null) {
                     binding.tvEmptyData.visibility = View.VISIBLE

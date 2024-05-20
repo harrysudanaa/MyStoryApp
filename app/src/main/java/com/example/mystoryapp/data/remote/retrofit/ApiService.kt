@@ -50,16 +50,16 @@ interface ApiService {
     suspend fun getDetailStory(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ) : DetailStoryResponse
+    ): DetailStoryResponse
 
     @Multipart
     @POST("stories")
     suspend fun addStory(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
-        @Part("description")  description: RequestBody,
+        @Part("description") description: RequestBody,
         @Part("lat") lat: RequestBody?,
         @Part("lon") lon: RequestBody?
-    ) : AddStoryResponse
+    ): AddStoryResponse
 
 }

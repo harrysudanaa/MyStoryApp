@@ -31,10 +31,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        with (mapsViewModel) {
+        with(mapsViewModel) {
             getSession().observe(this@MapsActivity) { user ->
                 getStoriesWithLocation(getString(R.string.bearer_token, user.token))
             }
@@ -43,6 +43,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        mMap.uiSettings.isZoomControlsEnabled = true
 
         mapsViewModel.location.observe(this) { location ->
             location.forEach { data ->
@@ -56,7 +58,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         .snippet(data.description)
                 )
             }
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.first().lat!!, location.first().lon!!)))
+            googleMap.moveCamera(
+                CameraUpdateFactory.newLatLng(
+                    LatLng(
+                        location.first().lat!!,
+                        location.first().lon!!
+                    )
+                )
+            )
         }
 
         try {

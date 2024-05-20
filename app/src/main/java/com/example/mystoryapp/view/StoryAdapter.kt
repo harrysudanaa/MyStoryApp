@@ -14,9 +14,10 @@ import com.example.mystoryapp.data.local.room.entity.Story
 import com.example.mystoryapp.databinding.ListStoryItemBinding
 import com.example.mystoryapp.view.detailstory.DetailStoryActivity
 
-class StoryAdapter : PagingDataAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CALLBACK){
+class StoryAdapter : PagingDataAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ListStoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ListStoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -30,7 +31,7 @@ class StoryAdapter : PagingDataAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CA
     class MyViewHolder(private val binding: ListStoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(storyItem: Story) {
-            with (binding) {
+            with(binding) {
                 tvItemName.text = storyItem.name
                 tvItemDescription.text = storyItem.description
                 Glide.with(ivItemPhoto.context)
@@ -38,7 +39,7 @@ class StoryAdapter : PagingDataAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CA
                     .into(ivItemPhoto)
 
                 // when item clicked, go to detail story
-                itemView.setOnClickListener{ view ->
+                itemView.setOnClickListener { view ->
                     val optionsCompat: ActivityOptionsCompat =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(
                             itemView.context as Activity,

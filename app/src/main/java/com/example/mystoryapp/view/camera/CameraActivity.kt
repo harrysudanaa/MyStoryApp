@@ -61,7 +61,7 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.switchCamera.setOnClickListener{
+        binding.switchCamera.setOnClickListener {
             cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
                 CameraSelector.DEFAULT_FRONT_CAMERA
             } else {
@@ -70,7 +70,7 @@ class CameraActivity : AppCompatActivity() {
             startCamera()
         }
 
-        binding.captureImage.setOnClickListener{
+        binding.captureImage.setOnClickListener {
             takePhoto()
         }
 

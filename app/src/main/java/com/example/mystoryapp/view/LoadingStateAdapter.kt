@@ -8,7 +8,8 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mystoryapp.databinding.ItemLoadingBinding
 
-class LoadingStateAdapter(private val retry: () -> Unit): LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
+class LoadingStateAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
 
     override fun onBindViewHolder(holder: LoadingStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)
@@ -27,6 +28,7 @@ class LoadingStateAdapter(private val retry: () -> Unit): LoadStateAdapter<Loadi
         init {
             binding.btnRetry.setOnClickListener { retry.invoke() }
         }
+
         fun bind(loadState: LoadState) {
             if (loadState is LoadState.Error) {
                 binding.tvErrorMessage.text = loadState.error.localizedMessage

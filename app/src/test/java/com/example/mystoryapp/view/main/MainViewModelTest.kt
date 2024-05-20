@@ -1,6 +1,5 @@
 package com.example.mystoryapp.view.main
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,8 +17,6 @@ import com.example.mystoryapp.getOrAwaitValue
 import com.example.mystoryapp.view.StoryAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -27,11 +24,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.mockStatic
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -68,7 +62,8 @@ class MainViewModelTest {
 
         Mockito.`when`(storyRepository.getStories(dummyUserModel.token)).thenReturn(expectedStory)
 
-        val actualStory: PagingData<Story> = mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
+        val actualStory: PagingData<Story> =
+            mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -93,7 +88,8 @@ class MainViewModelTest {
 
         Mockito.`when`(storyRepository.getStories(dummyUserModel.token)).thenReturn(expectedStory)
 
-        val actualStory: PagingData<Story> = mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
+        val actualStory: PagingData<Story> =
+            mainViewModel.getStories(dummyUserModel.token).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -105,15 +101,18 @@ class MainViewModelTest {
         Assert.assertEquals(0, differ.snapshot().size)
     }
 }
+
 class StoryPagingSource : PagingSource<Int, LiveData<List<Story>>>() {
     companion object {
         fun snapshot(items: List<Story>): PagingData<Story> {
             return PagingData.from(items)
         }
     }
+
     override fun getRefreshKey(state: PagingState<Int, LiveData<List<Story>>>): Int {
         return 0
     }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<Story>>> {
         return LoadResult.Page(emptyList(), 0, 1)
     }

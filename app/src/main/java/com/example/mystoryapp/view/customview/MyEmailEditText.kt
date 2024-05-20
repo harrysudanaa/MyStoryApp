@@ -22,7 +22,7 @@ class MyEmailEditText @JvmOverloads constructor(
         }
     }
 
-    private fun isValidEmail(text : CharSequence?): Boolean {
+    private fun isValidEmail(text: CharSequence?): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
     }
 }

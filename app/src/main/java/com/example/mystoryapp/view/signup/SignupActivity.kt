@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
-    private lateinit var binding : ActivitySignupBinding
+    private lateinit var binding: ActivitySignupBinding
     private val signupViewModel by viewModels<SignupViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +41,13 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        with (binding) {
+        with(binding) {
             signupButton.setOnClickListener {
                 val name = edRegisterName.text.toString()
                 val email = edRegisterEmail.text.toString()
                 val password = edRegisterPassword.text.toString()
 
-                with (signupViewModel) {
+                with(signupViewModel) {
                     register(name, email, password)
 
                     message.observe(this@SignupActivity) { message ->

@@ -12,7 +12,10 @@ import com.example.mystoryapp.data.local.room.entity.Story
 import com.example.mystoryapp.data.repository.StoryRepository
 import com.example.mystoryapp.utils.uriToBitmap
 
-class StackRemoteViewsFactory(private val context: Context, private val repository: StoryRepository) : RemoteViewsService.RemoteViewsFactory {
+class StackRemoteViewsFactory(
+    private val context: Context,
+    private val repository: StoryRepository
+) : RemoteViewsService.RemoteViewsFactory {
 
     private val widgetItems = ArrayList<Bitmap>()
     private val listStories = ArrayList<Story>()
