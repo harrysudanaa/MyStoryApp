@@ -98,4 +98,7 @@ dependencies {
 
     testImplementation(libs.turbine)
     testImplementation(libs.androidx.paging.testing)
+
+    androidTestImplementation(libs.androidx.espresso.intents)
+    implementation(libs.androidx.espresso.idling.resource)
 }
