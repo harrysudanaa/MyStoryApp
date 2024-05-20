@@ -148,9 +148,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        val layout = binding.containerLogin
         if (isLoading) {
             binding.progressBarLogin.visibility = View.VISIBLE
-            val layout = binding.containerLogin
             layout.alpha = 0.5f
         } else {
             binding.progressBarLogin.visibility = View.GONE
